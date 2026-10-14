@@ -70,3 +70,64 @@ export const updateUser = async (req: Request, res: Response) => {
         })
     }
 }
+
+
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id as string
+        const user = await UserModel.findById(id)
+        if(!user){
+            return res.status(404).json({
+                error: "User not found"
+            })
+        }
+
+        await UserModel.remove(id)
+        res.status(200).json({
+            error: "User deleted successfully",
+            data: user
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            error: "Something went wrong"
+        })
+    }
+}
+
+
+export const getAll = async (req: Request, res: Response) => {
+    try {
+        const allUser = await UserModel.findAll()
+        res.status(200).json({
+            message: "Users retrieved successfully",
+            data: allUser
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            error: "Something went wrong"
+        })
+    }
+}
+
+export const getOne = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id as string
+        const user = await UserModel.findById(id)
+        if(!user){
+            return res.status(404).json({
+                error: "User not found"
+            })
+        }
+        res.status(200).json({
+            message: "User retrieved successfully",
+            data: user
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            error: "Something went wrong"
+        })
+    }
+}
